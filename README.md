@@ -25,13 +25,49 @@
     d.	…
 
     e.	Pn {action}
-
 5.	Write a program in the vi editor and save it with .l extension.
-
 6.	Compile the lex program with lex compiler to produce output file as lex.yy.c. eg $ lex filename.l $ cc lex.yy.c
 7.	Compile that file with C compiler and verify the output.
 
 # INPUT
+```
+%{
+#include <stdio.h>
+#include <ctype.h>
+%}
+
+%%
+
+"if"        { printf("Keyword: %s\n", yytext); }
+"else"      { printf("Keyword: %s\n", yytext); }
+"while"     { printf("Keyword: %s\n", yytext); }
+"for"       { printf("Keyword: %s\n", yytext); }
+
+[0-9]+      { printf("Number: %s\n", yytext); }
+[a-zA-Z_][a-zA-Z0-9_]*   { printf("Identifier: %s\n", yytext); }
+
+"=="|"="    { printf("Operator: %s\n", yytext); }
+"+"|"-"|"*"|"/" { printf("Operator: %s\n", yytext); }
+
+[ \t\n]     ;   // Ignore whitespace
+.           { printf("Unknown: %s\n", yytext); }
+
+%%
+
+int main(int argc, char **argv) {
+    yylex();
+    return 0;
+}
+
+int yywrap() {
+    return 1;
+}
+```
 # OUTPUT
+
+<img width="1246" height="751" alt="Screenshot 2025-09-18 153836" src="https://github.com/user-attachments/assets/354369ff-43f5-41bc-89b7-430ec42ec1f6" />
+
+
+<img width="1256" height="753" alt="Screenshot 2025-09-18 153946" src="https://github.com/user-attachments/assets/3f3d4ea7-f9eb-4144-b78a-678c6f99c518" />
 # RESULT
 ## The lexical analyzer is implemented using lex and the output is verified.
